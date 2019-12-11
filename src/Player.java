@@ -127,6 +127,7 @@ public class Player {
       if (isColumnEmpty(pawn)) {
         result += 3;
       }
+
       pawnCount++;
     }
 
