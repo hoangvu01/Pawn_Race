@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a6e2ae2b-a74f-4619-8b6d-85940947ffa9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pawn_Race.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Pawn_Race/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Pawn_Race/Player.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +15,27 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1UqDI8FaHbZJTXIxkIFvABbiuss" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration name="PawnRace" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="PawnRace" />
+      <module name="Pawn_Race" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.PawnRace" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -45,5 +61,23 @@
       <updated>1576075148890</updated>
     </task>
     <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1872" height="275" key="GridCell.Tab.0.bottom" timestamp="1576075784559">
+      <screen x="0" y="26" width="1920" height="1054" />
+    </state>
+    <state width="1872" height="275" key="GridCell.Tab.0.bottom/0.26.1920.1054@0.26.1920.1054" timestamp="1576075784559" />
+    <state width="1872" height="275" key="GridCell.Tab.0.center" timestamp="1576075784558">
+      <screen x="0" y="26" width="1920" height="1054" />
+    </state>
+    <state width="1872" height="275" key="GridCell.Tab.0.center/0.26.1920.1054@0.26.1920.1054" timestamp="1576075784558" />
+    <state width="1872" height="275" key="GridCell.Tab.0.left" timestamp="1576075784558">
+      <screen x="0" y="26" width="1920" height="1054" />
+    </state>
+    <state width="1872" height="275" key="GridCell.Tab.0.left/0.26.1920.1054@0.26.1920.1054" timestamp="1576075784558" />
+    <state width="1872" height="275" key="GridCell.Tab.0.right" timestamp="1576075784558">
+      <screen x="0" y="26" width="1920" height="1054" />
+    </state>
+    <state width="1872" height="275" key="GridCell.Tab.0.right/0.26.1920.1054@0.26.1920.1054" timestamp="1576075784558" />
   </component>
 </project>

@@ -125,7 +125,7 @@ public class Player {
       result += 8 - pawn.getY();
 
       if (isColumnEmpty(pawn)) {
-        result += 3;
+        result -= 3;
       }
 
       pawnCount++;
@@ -144,7 +144,7 @@ public class Player {
     for (Square pawn : getPawns(Colour.BLACK)) {
       result += pawn.getY();
       if (isColumnEmpty(pawn)) {
-        result += 3;
+        result -= 3;
       }
       pawnCount++;
     }
@@ -231,11 +231,7 @@ public class Player {
     return passedPawns;
   }
 
-  private boolean isColumnEmpty(Square pawn) {
-    return isColumnEmpty(pawn.getX(), pawn.getY());
-  }
-
-  private boolean isColumnEmpty(int x, int y) {
+  private boolean isColumnEmpty(int x, int y, Colour colour) {
     if (colour == Colour.WHITE) {
       for (int i = 7; i > y; i--) {
         if (board.getSquare(x, i).occupiedBy() != Colour.NONE) {
@@ -253,6 +249,33 @@ public class Player {
     }
     return true;
   }
+
+  private boolean isColumnEmpty(int x, int y) {
+    return isColumnEmpty(x,y, this.colour);
+  }
+
+  private boolean isColumnEmpty(Square pawn) {
+    return isColumnEmpty(pawn.getX(), pawn.getY(), pawn.occupiedBy());
+  }
+
+//  private boolean isColumnEmpty(int x, int y) {
+//    if (colour == Colour.WHITE) {
+//      for (int i = 7; i > y; i--) {
+//        if (board.getSquare(x, i).occupiedBy() != Colour.NONE) {
+//          return false;
+//        }
+//      }
+//    }
+//
+//    if (colour == Colour.BLACK) {
+//      for (int i = 0; i < y; i++) {
+//        if (board.getSquare(x, i).occupiedBy() != Colour.NONE) {
+//          return false;
+//        }
+//      }
+//    }
+//    return true;
+//  }
 
   public Move[] getValidMovesFrom(Colour colour) {
     List<Move> allMoves = new ArrayList<>();
