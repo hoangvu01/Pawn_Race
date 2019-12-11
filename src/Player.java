@@ -36,9 +36,10 @@ public class Player {
     return getAllValidMoves()[moveIndex];
   }
 
-  public Move pushPassedPawn(){
-    if (getPassedPawns() == null || getPassedPawns().size() == 0)
+  public Move pushPassedPawn() {
+    if (getPassedPawns() == null || getPassedPawns().size() == 0) {
       return null;
+    }
 
     Square bestPawn = getPassedPawns().get(0);
 
@@ -56,11 +57,13 @@ public class Player {
   }
 
   private Square pushPawn(Square from) {
-    if (colour == Colour.BLACK)
-      return board.getSquare(from.getX(), from.getY() + 1);
-    return board.getSquare(from.getX(), from.getY() - 1);
+    if (colour == Colour.BLACK) {
+      return board.getSquare(from.getX(), from.getY() - 1);
+    }
+    return board.getSquare(from.getX(), from.getY() + 1);
 
   }
+
   public Move makeMove() {
     if (pushPassedPawn() != null || getPassedPawns().size() != 0) {
       return pushPassedPawn();
@@ -69,7 +72,7 @@ public class Player {
     Move toMove = getAllValidMoves()[0];
     int eval;
     System.out.println("Thinking...");
-    if (colour == Colour.WHITE) {
+    if (colour == Colour.BLACK) {
       int maxEval = -1000;
       for (Move m : getAllValidMoves()) {
         eval = minimax(child(m), 7, -1000, 1000, true);
@@ -92,7 +95,7 @@ public class Player {
         }
       }
     }
-    System.out.println(toMove.getSAN());
+    System.out.println(toMove.toString());
     return toMove;
   }
 
@@ -120,8 +123,9 @@ public class Player {
     int pawnCount = 0;
     for (Square pawn : getPawns(Colour.WHITE)) {
       result += 8 - pawn.getY();
+
       if (isColumnEmpty(pawn)) {
-        result -= 3;
+        result += 3;
       }
       pawnCount++;
     }
@@ -137,9 +141,9 @@ public class Player {
     int result = 0;
     int pawnCount = 0;
     for (Square pawn : getPawns(Colour.BLACK)) {
-      result += pawn.getY() ;
+      result += pawn.getY();
       if (isColumnEmpty(pawn)) {
-        result -= 3;
+        result += 3;
       }
       pawnCount++;
     }
@@ -210,13 +214,15 @@ public class Player {
       }
 
       if (pawn.getX() > 0) {
-        if (!isColumnEmpty(pawn.getX() - 1, pawn.getY()))
+        if (!isColumnEmpty(pawn.getX() - 1, pawn.getY())) {
           continue;
+        }
       }
 
       if (pawn.getX() < 7) {
-        if (!isColumnEmpty(pawn.getX() + 1, pawn.getY()))
+        if (!isColumnEmpty(pawn.getX() + 1, pawn.getY())) {
           continue;
+        }
       }
 
       passedPawns.add(pawn);
@@ -231,13 +237,17 @@ public class Player {
   private boolean isColumnEmpty(int x, int y) {
     if (colour == Colour.WHITE) {
       for (int i = 7; i > y; i--) {
-        if (board.getSquare(x, i).occupiedBy() != Colour.NONE) return false;
+        if (board.getSquare(x, i).occupiedBy() != Colour.NONE) {
+          return false;
+        }
       }
     }
 
     if (colour == Colour.BLACK) {
       for (int i = 0; i < y; i++) {
-        if (board.getSquare(x, i).occupiedBy() != Colour.NONE) return false;
+        if (board.getSquare(x, i).occupiedBy() != Colour.NONE) {
+          return false;
+        }
       }
     }
     return true;
@@ -252,6 +262,7 @@ public class Player {
     finalMoves = allMoves.toArray(finalMoves);
     return finalMoves;
   }
+
   public Move[] getAllValidMoves() {
     List<Move> allMoves = new ArrayList<>();
     for (Square pawn : getAllPawns()) {

@@ -46,7 +46,7 @@ public class PawnRace {
             System.exit(1);
           }
           if (one.isComputerPlayer()) {
-            game.applyMove(one.makeMove());
+            game.applyMove(one.makeMoveRand());
             continue;
           }
         }
