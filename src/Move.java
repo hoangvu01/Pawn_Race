@@ -20,6 +20,10 @@ public class Move{
         return to;
     }
 
+    public boolean getIsCapture() {
+        return capture;
+    }
+
     public boolean isCapture(){
         if (from.occupiedBy() == to.occupiedBy()
                 || from.occupiedBy() != Colour.NONE

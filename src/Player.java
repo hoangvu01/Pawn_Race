@@ -37,7 +37,7 @@ public class Player {
   }
 
   public Move pushPassedPawn(){
-    if (getPassedPawns() == null)
+    if (getPassedPawns() == null || getPassedPawns().size() == 0)
       return null;
 
     Square bestPawn = getPassedPawns().get(0);
@@ -56,25 +56,25 @@ public class Player {
   }
 
   private Square pushPawn(Square from) {
-    if (colour == Colour.WHITE)
+    if (colour == Colour.BLACK)
       return board.getSquare(from.getX(), from.getY() + 1);
     return board.getSquare(from.getX(), from.getY() - 1);
 
   }
   public Move makeMove() {
-//    if (pushPassedPawn() != null) {
-//      return pushPassedPawn();
-//    }
+    if (pushPassedPawn() != null || getPassedPawns().size() != 0) {
+      return pushPassedPawn();
+    }
 
     Move toMove = getAllValidMoves()[0];
     int eval;
     System.out.println("Thinking...");
-    if (colour == Colour.BLACK) {
+    if (colour == Colour.WHITE) {
       int maxEval = -1000;
       for (Move m : getAllValidMoves()) {
         eval = minimax(child(m), 7, -1000, 1000, true);
 
-        if (eval > maxEval) {
+        if (eval >= maxEval) {
           toMove = m;
           maxEval = eval;
         }
@@ -86,7 +86,7 @@ public class Player {
         eval = minimax(child(m), 7, -1000, 1000, false);
         minEval = Integer.min(eval, minEval);
 
-        if (eval < minEval) {
+        if (eval <= minEval) {
           toMove = m;
           minEval = eval;
         }
@@ -110,6 +110,7 @@ public class Player {
       }
     }
     Square[] pawnsList = new Square[pawns.size()];
+    Collections.shuffle(pawns);
     pawnsList = pawns.toArray(pawnsList);
     return pawnsList;
   }
@@ -119,10 +120,14 @@ public class Player {
     int pawnCount = 0;
     for (Square pawn : getPawns(Colour.WHITE)) {
       result += 8 - pawn.getY();
+      if (isColumnEmpty(pawn)) {
+        result -= 3;
+      }
       pawnCount++;
     }
+
     for (int i = pawnCount; i < 7; i++) {
-      result += 3;
+      result += 2;
     }
 
     return result;
@@ -132,11 +137,16 @@ public class Player {
     int result = 0;
     int pawnCount = 0;
     for (Square pawn : getPawns(Colour.BLACK)) {
-      result += pawn.getY();
+      result += pawn.getY() ;
+      if (isColumnEmpty(pawn)) {
+        result -= 3;
+      }
       pawnCount++;
     }
+    result -= getPassedPawns().size() * 3;
+
     for (int i = pawnCount; i < 7; i++) {
-      result += 3;
+      result += 2;
     }
     return result;
   }
@@ -193,8 +203,6 @@ public class Player {
   }
 
   public List<Square> getPassedPawns() {
-    //    int[] blackY = new int[getPawns(colour.getOppositeColour()).length];
-    //    int[]
     List<Square> passedPawns = new ArrayList<>();
     for (Square pawn : getAllPawns()) {
       if (!isColumnEmpty(pawn.getX(), pawn.getY())) {
@@ -216,6 +224,10 @@ public class Player {
     return passedPawns;
   }
 
+  private boolean isColumnEmpty(Square pawn) {
+    return isColumnEmpty(pawn.getX(), pawn.getY());
+  }
+
   private boolean isColumnEmpty(int x, int y) {
     if (colour == Colour.WHITE) {
       for (int i = 7; i > y; i--) {
@@ -231,6 +243,15 @@ public class Player {
     return true;
   }
 
+  public Move[] getValidMovesFrom(Colour colour) {
+    List<Move> allMoves = new ArrayList<>();
+    for (Square pawn : getPawns(colour)) {
+      allMoves.addAll(tryAllMoves(pawn));
+    }
+    Move[] finalMoves = new Move[allMoves.size()];
+    finalMoves = allMoves.toArray(finalMoves);
+    return finalMoves;
+  }
   public Move[] getAllValidMoves() {
     List<Move> allMoves = new ArrayList<>();
     for (Square pawn : getAllPawns()) {
