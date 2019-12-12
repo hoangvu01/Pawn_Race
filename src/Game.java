@@ -5,6 +5,9 @@ public class Game {
 
 
   private boolean whitePlayer;
+
+
+
   private Board board;
   private List<Move> moves = new ArrayList<>();
   private int moveIndex;
@@ -21,6 +24,10 @@ public class Game {
 
   public void setBoard(Board board) {
     this.board = board;
+  }
+
+  public Board getBoard() {
+    return board;
   }
 
   public void setMoves(List<Move> moves) {

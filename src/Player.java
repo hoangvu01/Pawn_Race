@@ -1,9 +1,16 @@
+import static java.lang.Math.sqrt;
+
 import java.util.*;
 
 public class Player {
 
   private Colour colour;
   private boolean isBot;
+
+  public Board getBoard() {
+    return board;
+  }
+
   private Board board;
   private Game game;
 
@@ -95,7 +102,7 @@ public class Player {
         }
       }
     }
-    System.out.println(toMove.toString());
+    System.out.println(toMove.getSAN());
     return toMove;
   }
 
@@ -119,47 +126,41 @@ public class Player {
   }
 
   private int evalWhite() {
-    int result = 0;
-    int pawnCount = 0;
-    for (Square pawn : getPawns(Colour.WHITE)) {
-      result += 8 - pawn.getY();
-
-      if (isColumnEmpty(pawn)) {
-        result -= 3;
+    int maxDistance = 0;
+    int sndDistance = 0;
+    for (Square pawn : getPassedPawns()) {
+      int distance = pawn.getY() - 2;
+      maxDistance = Integer.max(maxDistance, pawn.getY() - 2);
+      if (distance > maxDistance) {
+        sndDistance = maxDistance;
+        maxDistance = distance;
+      } else if (distance > sndDistance && distance != maxDistance) {
+        sndDistance = distance;
       }
 
-      pawnCount++;
     }
-
-    for (int i = pawnCount; i < 7; i++) {
-      result += 2;
-    }
-
-    return result;
+    return getPawns(Colour.WHITE).length * 65 + 3 * maxDistance ^ 2 + sndDistance ^ 2;
   }
 
   private int evalBlack() {
-    int result = 0;
-    int pawnCount = 0;
-    for (Square pawn : getPawns(Colour.BLACK)) {
-      result += pawn.getY();
-      if (isColumnEmpty(pawn)) {
-        result -= 3;
-      }
-      pawnCount++;
-    }
-    result -= getPassedPawns().size() * 3;
+    int maxDistance = 0;
+    int sndDistance = 0;
 
-    for (int i = pawnCount; i < 7; i++) {
-      result += 2;
+    for (Square pawn : getPassedPawns()) {
+      int distance = 7 - pawn.getY();
+      maxDistance = Integer.max(maxDistance, pawn.getY() - 2);
+      if (distance > maxDistance) {
+        sndDistance = maxDistance;
+        maxDistance = distance;
+      } else if (distance > sndDistance && distance != maxDistance) {
+        sndDistance = distance;
+      }
     }
-    return result;
+    return getPawns(Colour.BLACK).length * 65 + 3 * maxDistance ^ 2 + sndDistance ^ 2;
   }
 
   private int evalBoard() {
-    return evalWhite() - evalBlack();
-    // large when white large, black small
-    // large when black is at advantage
+    return evalBlack() - evalWhite();
   }
 
   public Game getGame() {
@@ -169,6 +170,7 @@ public class Player {
   private int minimax(Player p, int depth, int alpha, int beta, boolean maximisngPlayer) {
     int eval;
     if (depth == 0 || p.getGame().isFinished()) {
+//      System.out.println(p.getBoard());
       return p.evalBoard();
     }
     if (maximisngPlayer) {
@@ -203,8 +205,12 @@ public class Player {
   private Player child(Move m) {
     Board board1 = board.clone();
     Game game1 = game.clone(board1);
-    game1.applyMove(m.clone());
-    return new Player(game1, board1, (colour == Colour.WHITE ? Colour.BLACK : Colour.WHITE), 'c');
+    Square from = board1.getSquare(m.getFrom().getX(), m.getFrom().getY());
+    Square to = board1.getSquare(m.getTo().getX(), m.getTo().getY());
+    Move m1 = new Move(from, to, m.getIsCapture(), m.isEnPassantCapture());
+    game1.applyMove(m1);
+    return new Player(game1, game1.getBoard(),
+        (colour == Colour.WHITE ? Colour.BLACK : Colour.WHITE), 'c');
   }
 
   public List<Square> getPassedPawns() {
@@ -251,7 +257,7 @@ public class Player {
   }
 
   private boolean isColumnEmpty(int x, int y) {
-    return isColumnEmpty(x,y, this.colour);
+    return isColumnEmpty(x, y, this.colour);
   }
 
   private boolean isColumnEmpty(Square pawn) {
