@@ -2,78 +2,30 @@ import java.util.Scanner;
 
 public class PawnRace {
 
-  public static void main(String[] args) {
-    Board board;
+    public static void main(String[] args) {
 
-    Game game;
-    Player one;
-    Player two;
+        while (true) {
 
-    Scanner scanner = new Scanner(System.in);
-    String input;
+            String input;
+            Scanner scanner = new Scanner(System.in);
 
-    while (true) {
-      try {
-        System.out.println("Welcome to PawnRace");
-        System.out.println("Please initialise the board");
-        System.out.println("<white> <black> <white gap> <black gap>");
-        input = scanner.nextLine();
-        board = new Board(input.charAt(4), input.charAt(6));
-        game = new Game(board);
-        one = new Player(game, board, Colour.WHITE, input.charAt(0));
-        two = new Player(game, board, Colour.BLACK, input.charAt(2));
-        break;
-      } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
-        System.out.println(e.getMessage());
-        System.out.println("Please enter a valid column");
-        System.out.println("----------------------------");
-        continue;
-      }
-    }
-
-    while (true) {
-      try {
-        System.out.println(board);
-        if (game.isFinished()) {
-          System.out.println("Congratulations!");
-          System.out.println(game.getGameResult() + " wins");
-          System.exit(1);
+            System.out.println("Welcome to Pawn Race");
+            System.out.println("Press 1 to play");
+            System.out.println("Press 2 to exit");
+            input = scanner.nextLine();
+            switch (input) {
+                case "1": {
+                    playGame();
+                    continue;
+                }
+                case "2": {
+                    System.exit(1);
+                }
+                default: {
+                    continue;
+                }
+            }
         }
-        System.out.println("It's " + game.getCurrentPlayer() + "'s turn to move!");
-        if (game.getCurrentPlayer() == one.getColour()) {
-          if (one.getAllValidMoves().length == 0) {
-            System.out.println("GAME DRAWN!");
-            System.exit(1);
-          }
-          if (one.isComputerPlayer()) {
-            game.applyMove(one.makeMove());
-            continue;
-          }
-        }
-        if (game.getCurrentPlayer() == two.getColour()) {
-          if (two.getAllValidMoves().length == 0) {
-            System.out.println("GAME DRAWN!");
-            System.exit(1);
-          }
-          if (two.isComputerPlayer()) {
-            game.applyMove(two.makeMove());
-            continue;
-          }
-        }
-
-        input = scanner.nextLine();
-        if (input.equals("quit")) {
-          System.exit(1);
-        }
-        if (input.equals("undo")) {
-          game.unapplyMove();
-          game.unapplyMove();
-        }
-        game.applyMove(input);
-      } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
-        System.out.println("Invalid move please try again");
-      }
-    }
 
 //            Board board = new Board('h', 'h');
 //            Game game = new Game(board);
@@ -98,5 +50,80 @@ public class PawnRace {
 //            System.out.println(one.getPassedPawns().get(0).toString());
 //            game.applyMove("a4");
 //            System.out.println(board);
-  }
+
+    }
+
+    public static void playGame() {
+        Board board;
+
+        Game game;
+        Player one;
+        Player two;
+
+        Scanner scanner = new Scanner(System.in);
+        String input;
+
+        while (true) {
+            try {
+                System.out.println("Welcome to PawnRace");
+                System.out.println("Please initialise the board");
+                System.out.println("<white> <black> <white gap> <black gap>");
+                input = scanner.nextLine();
+                board = new Board(input.charAt(4), input.charAt(6));
+                game = new Game(board);
+                one = new Player(game, board, Colour.WHITE, input.charAt(0));
+                two = new Player(game, board, Colour.BLACK, input.charAt(2));
+                break;
+            } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Please enter a valid column");
+                System.out.println("----------------------------");
+                continue;
+            }
+        }
+
+        while (true) {
+            try {
+                System.out.println(board);
+                if (game.isFinished()) {
+                    System.out.println("Congratulations!");
+                    System.out.println(game.getGameResult() + " wins");
+                    return;
+                }
+                System.out.println("It's " + game.getCurrentPlayer() + "'s turn to move!");
+                if (game.getCurrentPlayer() == one.getColour()) {
+                    if (one.getAllValidMoves().length == 0) {
+                        System.out.println("GAME DRAWN!");
+                        System.exit(1);
+                    }
+                    if (one.isComputerPlayer()) {
+                        game.applyMove(one.makeMove());
+                        continue;
+                    }
+                }
+                if (game.getCurrentPlayer() == two.getColour()) {
+                    if (two.getAllValidMoves().length == 0) {
+                        System.out.println("GAME DRAWN!");
+                        System.exit(1);
+                    }
+                    if (two.isComputerPlayer()) {
+                        game.applyMove(two.makeMove());
+                        continue;
+                    }
+                }
+
+                input = scanner.nextLine();
+                if (input.equals("quit")) {
+                    return;
+                }
+                if (input.equals("undo")) {
+                    game.unapplyMove();
+                    game.unapplyMove();
+                }
+                game.applyMove(input);
+            } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
+                System.out.println("Invalid move please try again");
+            }
+        }
+    }
 }
